@@ -21,4 +21,10 @@ class Product(Base):
     title: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False)
     client_id: Mapped[int] = mapped_column(Integer, ForeignKey('clients.id'), nullable=False)
-    client: Mapped[Client] = relationship('Client', back_populates='products')
+    client: Mapped[Client] = relationship('Client', back_populates='products', lazy='selectin')
+
+
+
+
+
+
