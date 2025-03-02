@@ -43,7 +43,16 @@ class ClientCrud:
 
     async def delete_client(self, client_id: int):
         stmt = delete(Client).where(Client.id == client_id).returning(Client)
-        result = await self.session.execute(stmt)
-        await self.session.commit()
-        return result.scalar()
+        stmt_products = delete(Product).where(Product.client_id == client_id).returning(Product)
+
+        async with self.session as conn:
+            try:
+                stmt_result = await conn.execute(stmt)
+                stmt_result_products = await conn.execute(stmt_products)
+                await conn.commit()
+            except Exception as error:
+                await conn.rollback()
+                raise error
+        result = [stmt_result.scalar(), stmt_result_products.scalars().all()]
+        return result
 

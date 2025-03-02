@@ -12,8 +12,8 @@ class ClientCreate(ClientBase):
 
 
 class ClientUpdate(BaseModel):
-    name: Optional[str]
-    age: Optional[int]
+    name: Optional[str] = None
+    age: Optional[int] = None
 
 
 class ClientPublic(ClientBase):
